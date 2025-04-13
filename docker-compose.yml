@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  namenode:
+    build: .
+    container_name: namenode
+    hostname: namenode
+    ports:
+      - "2222:22"
+      - "9864:9864"
+      - "9870:9870"
+      - "8088:8088"
+      - "8020:8020"
+      - "9000:9000"
+      - "9866:9866"
+      - "9867:9867"
+    volumes:
+      - namenode_data:/root/hdfs/namenode
+    privileged: true
+
+  datanode1:
+    build: .
+    container_name: datanode1
+    hostname: datanode1
+    ports:
+      - "2223:22"
+      - "8865:9864" 
+      - "8868:9866"
+      - "8869:9867"
+     
+
+    volumes:
+      - datanode1_data:/root/hdfs/datanode
+    privileged: true
+
+  datanode2:
+    build: .
+    container_name: datanode2
+    hostname: datanode2
+    ports:
+      - "2224:22"
+      - "7865:9864" 
+      - "7868:9866"
+      - "7869:9867"
+    volumes:
+      - datanode2_data:/root/hdfs/datanode
+    privileged: true
+
+volumes:
+  namenode_data:
+  datanode1_data:
+  datanode2_data:

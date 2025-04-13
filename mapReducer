@@ -1,0 +1,23 @@
+import subprocess
+import csv
+from collections import defaultdict
+
+def read_hdfs_file(hdfs_path):
+    result = subprocess.run(['hdfs', 'dfs', '-cat', hdfs_path], capture_output=True, text=True)
+    return result.stdout.splitlines()
+def count_cancer_types(hdfs_path):
+    cancer_counts = defaultdict(int)
+    lines = read_hdfs_file(hdfs_path)
+
+    reader = csv.reader(lines)
+    header = next(reader)  
+
+    for row in reader:
+        cancer_type = row[6]  # "Cancer_Type"
+        cancer_counts[cancer_type] += 1
+
+    for cancer, count in cancer_counts.items():
+        print(f"{cancer}: {count}")
+
+# Appel de la fonction avec le chemin dans HDFS
+count_cancer_types("namenode://input/dataset.csv")
